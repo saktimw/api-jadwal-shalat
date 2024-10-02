@@ -1,6 +1,7 @@
 {
-  "name": "adzan-kemenag",
-  "version": "1.0.50",
+  "name": "api-jadwal-adzan",
+  "description": "API jadwal shalat yang diambil dari website https://bimasislam.kemenag.go.id/jadwalshalat",
+  "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"

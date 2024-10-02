@@ -1,7 +1,25 @@
-import { Elysia } from "elysia";
+import { Elysia, error } from 'elysia'
+import { states } from './config/state';
+import { loadAllRoutes } from './config/route';
+import { middleware } from './middleware';
+import { error_parse } from './helpers/error-parse';
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+export const ROOT_DIR: string = import.meta.dir;
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+new Elysia()
+.state({ ...states })
+.onBeforeHandle(({ store }) => middleware(store))
+	.use(loadAllRoutes)
+		.onError(({ code }) => {
+			if (code === "NOT_FOUND") {
+				const { status } = error_parse("P404")
+				return {
+					status: status
+				}
+			}
+		})
+		.get('/', async () => 'Connected !')
+.listen(import.meta.env.APP_PORT ?? 3000)
+
+console.log(`Connected !\nLink: http://localhost:${import.meta.env.APP_PORT}
+`);
